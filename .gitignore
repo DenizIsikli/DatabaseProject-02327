@@ -38,5 +38,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/
 /.idea/copilot/chatSessions/xd.lck
 /.idea/copilot/chatSessions/00000000000.xd
