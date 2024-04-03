@@ -58,8 +58,9 @@ public class PhotosAndReportersLoader {
 						String streetName = values.get(5);
 						Integer civicNumber = Integer.valueOf(values.get(6));
 						Integer zipCode  = Integer.valueOf(values.get(7));
-						String country = values.get(8);
-						PhotoAndReporter far = new PhotoAndReporter(title, date, cpr, firstName, lastName, streetName, civicNumber, zipCode, country);
+						String city = values.get(8);
+						String country = "Denmark";
+						PhotoAndReporter far = new PhotoAndReporter(title, date, cpr, firstName, lastName, streetName, civicNumber, city , zipCode, country);
 						farList.add(far);
 					} else
 						throw new IOException("Invalid number of values on line " +lineNbr +". expected " +NUMBER_OF_FIELDS_EXPECTED +" values, found " +values.size());
