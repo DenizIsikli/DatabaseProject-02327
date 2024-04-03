@@ -2,23 +2,12 @@ DROP DATABASE IF EXISTS DKAvisDB;
 CREATE DATABASE DKAvisDB;
 USE DKAvisDB;
 
-DROP TABLE IF EXISTS Address;
 DROP TABLE IF EXISTS Newspaper;
 DROP TABLE IF EXISTS Journalist;
 DROP TABLE IF EXISTS Photo;
 DROP TABLE IF EXISTS Edition;
 DROP TABLE IF EXISTS Article;
 
--- Address table.
-CREATE TABLE Address (
-                         Address_id INT AUTO_INCREMENT,
-                         Street_name VARCHAR(255),
-                         Civic_number INT,
-                         City VARCHAR(100),
-                         Zip_code VARCHAR(20),
-                         Country VARCHAR(100),
-                         PRIMARY KEY (Address_id)
-);
 
 -- Newspaper table.
 CREATE TABLE Newspaper (
@@ -32,10 +21,13 @@ CREATE TABLE Journalist (
                             CPR INT PRIMARY KEY,
                             First_name VARCHAR(100),
                             Last_name VARCHAR(100),
-                            Address_id INT,
+                            Street_name VARCHAR(255),
+                            Civic_number INT,
+                            City VARCHAR(100),
+                            Zip_code VARCHAR(20),
+                            Country VARCHAR(100),
                             Telephone_num VARCHAR(20),
-                            Email VARCHAR(100),
-                            FOREIGN KEY (Address_id) REFERENCES Address(Address_id) ON DELETE SET NULL
+                            Email VARCHAR(100)
 );
 
 -- Photo table.
@@ -71,29 +63,6 @@ CREATE TABLE Article (
                          FOREIGN KEY (Edition_id) REFERENCES Edition(Edition_id)
 );
 
--- Insert into Address
-INSERT INTO Address (Street_name, Civic_number, City, Zip_code, Country) VALUES
-                                                                             ('Ryesgade', 24, 'Aarhus', '8000', 'Denmark'),
-                                                                             ('Vesterbrogade', 68, 'København', '1620', 'Denmark'),
-                                                                             ('Algade', 55, 'Aalborg', '9000', 'Denmark'),
-                                                                             ('Brogade', 29, 'Odense', '5000', 'Denmark'),
-                                                                             ('Østergade', 12, 'Esbjerg', '6700', 'Denmark'),
-                                                                             ('Nørregade', 3, 'Horsens', '8700', 'Denmark'),
-                                                                             ('Søndergade', 7, 'Vejle', '7100', 'Denmark'),
-                                                                             ('Vestergade', 1, 'Roskilde', '4000', 'Denmark'),
-                                                                             ('Østergade', 5, 'Fredericia', '7000', 'Denmark'),
-                                                                             ('Nørregade', 9, 'Randers', '8900', 'Denmark'),
-                                                                             ('Søndergade', 11, 'Herning', '7400', 'Denmark'),
-                                                                             ('Vestergade', 13, 'Helsingør', '3000', 'Denmark'),
-                                                                             ('Østergade', 15, 'Silkeborg', '8600', 'Denmark'),
-                                                                             ('Nørregade', 17, 'Kolding', '6000', 'Denmark'),
-                                                                             ('Søndergade', 19, 'Hillerød', '3400', 'Denmark'),
-                                                                             ('Vestergade', 21, 'Næstved', '4700', 'Denmark'),
-                                                                             ('Østergade', 23, 'Holstebro', '7500', 'Denmark'),
-                                                                             ('Nørregade', 25, 'Slagelse', '4200', 'Denmark'),
-                                                                             ('Søndergade', 27, 'Taastrup', '2630', 'Denmark'),
-                                                                             ('Vestergade', 29, 'Frederikshavn', '9900', 'Denmark');
-
 -- Insert into Newspaper
 INSERT INTO Newspaper (Title, Found_date, Periodicity) VALUES
                                                            ('Politiken', '2021-07-13', 1),
@@ -118,27 +87,27 @@ INSERT INTO Newspaper (Title, Found_date, Periodicity) VALUES
                                                            ('Kolding Folkeblad', '2023-01-07', 9);
 
 -- Insert into Journalist
-INSERT INTO Journalist (CPR, First_name, Last_name, Address_id, Telephone_num, Email) VALUES
-                                                                                          (3001, 'Anders', 'Hansen', 1, '31234567', 'anders.hansen@email.dk'),
-                                                                                          (3002, 'Birgitte', 'Larsen', 2, '32345678', 'birgitte.larsen@email.dk'),
-                                                                                          (3003, 'Christoffer', 'Christensen', 3, '33456789', 'christoffer.christensen@email.dk'),
-                                                                                          (3004, 'Dorthe', 'Jørgensen', 4, '34567890', 'dorthe.jorgensen@email.dk'),
-                                                                                          (3005, 'Emil', 'Mortensen', 5, '35678901', 'emil.mortensen@email.dk'),
-                                                                                          (3006, 'Freja', 'Jensen', 6, '36789012', 'freja.jensen@email.dk'),
-                                                                                          (3007, 'Gustav', 'Kristensen', 7, '37890123', 'gustav.kristensen@email.dk'),
-                                                                                          (3008, 'Hanne', 'Nielsen', 8, '38901234', 'hanne.nielsen@email.dk'),
-                                                                                          (3009, 'Ib', 'Pedersen', 9, '39012345', 'ib.pedersen@email.dk'),
-                                                                                          (3010, 'Jakob', 'Andersen', 10, '40123456', 'jakob.andersen@email.dk'),
-                                                                                          (3011, 'Lærke', 'Rasmussen', 11, '41234567', 'laerke.rasmussen@email.dk'),
-                                                                                          (3012, 'Magnus', 'Kjær', 12, '42345678', 'magnus.kjaer@email.dk'),
-                                                                                          (3013, 'Nanna', 'Møller', 13, '43456789', 'nanna.moller@email.dk'),
-                                                                                          (3014, 'Oliver', 'Svendsen', 14, '44567890', 'oliver.svendsen@email.dk'),
-                                                                                          (3015, 'Pernille', 'Thomsen', 15, '45678901', 'pernille.thomsen@email.dk'),
-                                                                                          (3016, 'Rasmus', 'Knudsen', 16, '46789012', 'rasmus.knudsen@email.dk'),
-                                                                                          (3017, 'Sara', 'Lund', 17, '47890123', 'sara.lund@email.dk'),
-                                                                                          (3018, 'Thomas', 'Clausen', 18, '48901234', 'thomas.clausen@email.dk'),
-                                                                                          (3019, 'Ulla', 'Poulsen', 19, '49012345', 'ulla.poulsen@email.dk'),
-                                                                                          (3020, 'Viktor', 'Johansen', 20, '50123456', 'viktor.johansen@email.dk');
+INSERT INTO Journalist (CPR, First_name, Last_name, Street_name, Civic_number, City, Zip_code, Country, Telephone_num, Email) VALUES
+                                                                                                                                  (3001, 'Anders', 'Hansen', 'Ryesgade', 24, 'Aarhus', '8000', 'Denmark', '31234567', 'anders.hansen@email.dk'),
+                                                                                                                                  (3002, 'Birgitte', 'Larsen', 'Vesterbrogade', 68, 'København', '1620', 'Denmark', '32345678', 'birgitte.larsen@email.dk'),
+                                                                                                                                  (3003, 'Christoffer', 'Christensen', 'Algade', 55, 'Aalborg', '9000', 'Denmark', '33456789', 'christoffer.christensen@email.dk'),
+                                                                                                                                  (3004, 'Dorthe', 'Jørgensen', 'Brogade', 29, 'Odense', '5000', 'Denmark', '34567890', 'dorthe.jorgensen@email.dk'),
+                                                                                                                                  (3005, 'Emil', 'Mortensen', 'Østergade', 12, 'Esbjerg', '6700', 'Denmark', '35678901', 'emil.mortensen@email.dk'),
+                                                                                                                                  (3006, 'Freja', 'Jensen', 'Nørregade', 3, 'Horsens', '8700', 'Denmark', '36789012', 'freja.jensen@email.dk'),
+                                                                                                                                  (3007, 'Gustav', 'Kristensen', 'Søndergade', 7, 'Vejle', '7100', 'Denmark', '37890123', 'gustav.kristensen@email.dk'),
+                                                                                                                                  (3008, 'Hanne', 'Nielsen', 'Vestergade', 1, 'Roskilde', '4000', 'Denmark', '38901234', 'hanne.nielsen@email.dk'),
+                                                                                                                                  (3009, 'Ib', 'Pedersen', 'Østergade', 5, 'Fredericia', '7000', 'Denmark', '39012345', 'ib.pedersen@email.dk'),
+                                                                                                                                  (3010, 'Jakob', 'Andersen', 'Nørregade', 9, 'Randers', '8900', 'Denmark', '40123456', 'jakob.andersen@email.dk'),
+                                                                                                                                  (3011, 'Lærke', 'Rasmussen', 'Søndergade', 11, 'Herning', '7400', 'Denmark', '41234567', 'laerke.rasmussen@email.dk'),
+                                                                                                                                  (3012, 'Magnus', 'Kjær', 'Vestergade', 13, 'Helsingør', '3000', 'Denmark', '42345678', 'magnus.kjaer@email.dk'),
+                                                                                                                                  (3013, 'Nanna', 'Møller', 'Østergade', 15, 'Silkeborg', '8600', 'Denmark', '43456789', 'nanna.moller@email.dk'),
+                                                                                                                                  (3014, 'Oliver', 'Svendsen', 'Nørregade', 17, 'Kolding', '6000', 'Denmark', '44567890', 'oliver.svendsen@email.dk'),
+                                                                                                                                  (3015, 'Pernille', 'Thomsen', 'Søndergade', 19, 'Hillerød', '3400', 'Denmark', '45678901', 'pernille.thomsen@email.dk'),
+                                                                                                                                  (3016, 'Rasmus', 'Knudsen', 'Vestergade', 21, 'Næstved', '4700', 'Denmark', '46789012', 'rasmus.knudsen@email.dk'),
+                                                                                                                                  (3017, 'Sara', 'Lund', 'Østergade', 23, 'Holstebro', '7500', 'Denmark', '47890123', 'sara.lund@email.dk'),
+                                                                                                                                  (3018, 'Thomas', 'Clausen', 'Nørregade', 25, 'Slagelse', '4200', 'Denmark', '48901234', 'thomas.clausen@email.dk'),
+                                                                                                                                  (3019, 'Ulla', 'Poulsen', 'Søndergade', 27, 'Taastrup', '2630', 'Denmark', '49012345', 'ulla.poulsen@email.dk'),
+                                                                                                                                  (3020, 'Viktor', 'Johansen', 'Vestergade', 29, 'Frederikshavn', '9900', 'Denmark', '50123456', 'viktor.johansen@email.dk');
 
 -- Insert into Photo
 INSERT INTO Photo (Title, Date_taken, Journalist_CPR) VALUES
@@ -209,7 +178,6 @@ INSERT INTO Article (Title, Text, Topic, Times_read, Journalist_CPR, Photo_title
                                                                                                   ('Dune Part 2', 'Cinemax', 'Kultur', 1135, 3019, 'Dune Part 2', 15),
                                                                                                   ('Ebola', 'Ethiopia', 'Nyheder', 152, 3020, 'Ebola', 19);
 
-SELECT * FROM Address;
 SELECT * FROM Journalist;
 SELECT * FROM Newspaper;
 SELECT * FROM Edition;
