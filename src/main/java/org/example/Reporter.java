@@ -5,20 +5,20 @@ public class Reporter {
     private final Integer cpr;
     private final String firstName;
     private final String lastName;
-    private final String streetName;
-    private final Integer civicNumber;
-    private final Integer zipCode;
-    private final String country;
+    private final Integer addressId;
 
-    public Reporter(Integer cpr, String firstName, String lastName, String streetName, Integer civicNumber, Integer zipCode, String country) {
+    private final String Telephone_num;
+    private final String Email;
+
+    public Reporter(Integer cpr, String firstName, String lastName, Integer addressId, String Telephone_num, String Email) {
         this.cpr = cpr;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.streetName = streetName;
-        this.civicNumber = civicNumber;
-        this.zipCode = zipCode;
-        this.country = country;
+        this.addressId =addressId;
+        this.Telephone_num = Telephone_num;
+        this.Email = Email;
     }
+
 
     public Integer getCPR() { return cpr; }
 
@@ -30,26 +30,23 @@ public class Reporter {
         return lastName;
     }
 
-    public String getStreetName() {
-        return streetName;
+    public int getAddressId() {
+        return addressId;
     }
 
-    public Integer getCivicNumber() {
-        return civicNumber;
+    public String getTelephone_num() {
+        return Telephone_num;
     }
 
-    public Integer getZIPCode() { return zipCode; }
-
-    public String getCountry() {
-        return country;
+    public String getEmail() {
+        return Email;
     }
-
 
     @Override
     public String toString() {
         final String D = ";";
 
-        return getCPR() + D + getFirstName() + D + getLastName() + D + getStreetName() + D + getCivicNumber() + D + getZIPCode() + D + getCountry();
+        return getCPR() + D + getFirstName() + D + getLastName() + D + getAddressId();
     }
 
 }
