@@ -14,16 +14,17 @@ public class LoaderExample {
             List<PhotoAndReporter> photosAndReporters = loader.loadPhotosAndReporters(csv_file.getAbsolutePath());
 
 			for(PhotoAndReporter photoAndReporter : photosAndReporters) {
-                tableSchemeInsert("INSERT INTO reporters (cpr, first_name, last_name, street_name, civic_number, zip_code, country) VALUES ("
+                tableSchemeInsert("INSERT INTO journalist (CPR, First_name, Last_name, Street_name, Civic_number, City, Zip_code, Country) VALUES ("
                         + photoAndReporter.getReporter().getCPR() + ", '"
                         + photoAndReporter.getReporter().getFirstName()
                         + "', '" + photoAndReporter.getReporter().getLastName()
                         + "', '" + photoAndReporter.getReporter().getStreetName()
                         + "', " + photoAndReporter.getReporter().getCivicNumber()
-                        + ", " + photoAndReporter.getReporter().getZIPCode()
+                        + ", '" + photoAndReporter.getReporter().getCity()
+                        + "', " + photoAndReporter.getReporter().getZIPCode()
                         + ", '" + photoAndReporter.getReporter().getCountry()
                         + "');");
-                tableSchemeInsert("INSERT INTO photos (title, date) VALUES ('"
+                tableSchemeInsert("INSERT INTO photo (title, date_taken) VALUES ('"
                         + photoAndReporter.getPhoto().getTitle()
                         + "', '" + photoAndReporter.getPhoto().getDate()
                         + "');");
@@ -38,11 +39,11 @@ public class LoaderExample {
     public static void tableSchemeInsert(String sql_query) {
         String host = "localhost";
         String port = "3306";
-        String database = "projectdatabase";
+        String database = "DKavisDB";
         String cp = "utf8";
 
         String username = "root";
-        String password = "mypassword";
+        String password = "password";
 
         final String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?characterEncoding=" + cp;
 
