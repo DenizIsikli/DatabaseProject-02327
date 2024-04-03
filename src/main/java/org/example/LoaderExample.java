@@ -20,8 +20,8 @@ public class LoaderExample {
                         + "', '" + photoAndReporter.getReporter().getLastName()
                         + "', '" + photoAndReporter.getReporter().getStreetName()
                         + "', " + photoAndReporter.getReporter().getCivicNumber()
-                        + "', " + photoAndReporter.getReporter().getCity()
-                        + ", " + photoAndReporter.getReporter().getZIPCode()
+                        + ", '" + photoAndReporter.getReporter().getCity()
+                        + "', " + photoAndReporter.getReporter().getZIPCode()
                         + ", '" + photoAndReporter.getReporter().getCountry()
                         + "');");
                 tableSchemeInsert("INSERT INTO photo (title, date_taken) VALUES ('"
