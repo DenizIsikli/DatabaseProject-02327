@@ -38,11 +38,11 @@ public class LoaderExample {
     public static void tableSchemeInsert(String sql_query) {
         String host = "localhost";
         String port = "3306";
-        String database = "DKavisDB";
+        String database = "projectdatabase";
         String cp = "utf8";
 
         String username = "root";
-        String password = "password";
+        String password = "mypassword";
 
         final String url = "jdbc:mysql://" + host + ":" + port + "/" + database + "?characterEncoding=" + cp;
 
