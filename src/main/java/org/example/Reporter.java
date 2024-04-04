@@ -56,7 +56,7 @@ public class Reporter {
     public String toString() {
         final String D = ";";
 
-        return getCPR() + D + getFirstName() + D + getLastName() + D + getStreetName() + D + getCivicNumber() + D + getZIPCode() + D + getCountry();
+        return getCPR() + D + getFirstName() + D + getLastName() + D + getStreetName() + D + getCivicNumber() + getCity() + D + getZIPCode() + D + getCountry();
     }
 
 }
