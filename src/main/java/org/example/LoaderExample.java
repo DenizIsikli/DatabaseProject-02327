@@ -9,9 +9,8 @@ public class LoaderExample {
 	public static void main(String[] args) {
 		PhotosAndReportersLoader loader = new PhotosAndReportersLoader();
 		try {
-            File csv_file = new File("src/main/java/org/example/uploads.csv");
-
-            List<PhotoAndReporter> photosAndReporters = loader.loadPhotosAndReporters(csv_file.getAbsolutePath());
+            System.out.println("loading from "+args[0]);
+            List<PhotoAndReporter> photosAndReporters = loader.loadPhotosAndReporters(args[0]);
 
 			for(PhotoAndReporter photoAndReporter : photosAndReporters) {
                 tableSchemeInsert("INSERT INTO journalist (CPR, First_name, Last_name, Street_name, Civic_number, City, Zip_code, Country) VALUES ("
