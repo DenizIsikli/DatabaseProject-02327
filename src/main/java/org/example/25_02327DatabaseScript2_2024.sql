@@ -1,7 +1,7 @@
 -- -- -- 5. SQL Table Modifications
 -- INSERT a new journalist with CPR 3021
-INSERT INTO Journalist (CPR, First_name, Last_name, Address_id, Telephone_num, Email)
-VALUES (3021, 'Mette', 'Frederiksen', 11, '41234568', 'mette.frederiksen@email.dk');
+INSERT INTO Journalist (CPR, First_name, Last_name, Street_name, Civic_number, City, Zip_code, Country, Telephone_num, Email)
+VALUES (3021, 'Mette', 'Frederiksen', 'Ryesgade', 24, 'Aarhus', '8000', 'Denmark', '41234568', 'mette.frederiksen@email.dk');
 
 -- Show result after INSERT
 SELECT * FROM Journalist WHERE CPR = 3021;
@@ -23,8 +23,8 @@ SELECT * FROM Journalist WHERE CPR = 3021;
 
 -- -- Example 2 of task 5
 -- INSERT a new journalist with CPR 3022
-INSERT INTO Journalist (CPR, First_name, Last_name, Address_id, Telephone_num, Email)
-VALUES (3022, 'Lars', 'Løkke', 12, '41334567', 'lars.lokke@email.dk');
+INSERT INTO Journalist (CPR, First_name, Last_name, Street_name, Civic_number, City, Zip_code, Country, Telephone_num, Email)
+VALUES (3022, 'Lars', 'Løkke', 'Nørregade', 17, 'Kolding', '6000', 'Denmark', '44567890', 'lars.lokke@email.dk');
 
 -- Show result after INSERT
 SELECT * FROM Journalist WHERE CPR = 3022;
@@ -81,89 +81,84 @@ WHERE a.Photo_title = p.Title;
 
 
 -- -- -- 7. SQL Programming
--- Function 1
+-- Function
 DELIMITER //
-DROP FUNCTION IF EXISTS AvgReadsByJournalist;
-CREATE FUNCTION AvgReadsByJournalist(journalistCPR INT) RETURNS FLOAT
+DROP FUNCTION IF EXISTS ArticleSummary;
+CREATE FUNCTION ArticleSummary(journalistCPR INT) RETURNS VARCHAR(255)
 BEGIN
+    DECLARE summaryText VARCHAR(255);
+    DECLARE totalArticles INT;
     DECLARE avgReads FLOAT;
-SELECT AVG(Times_read) INTO avgReads FROM Article WHERE Journalist_CPR = journalistCPR;
-RETURN IFNULL(avgReads, 0);
-END//
-DELIMITER ;
-SELECT First_name, Last_name, AvgReadsByJournalist(CPR) AS Avg_Article_Reads
-FROM Journalist;
 
--- Function 2
-DELIMITER //
-DROP PROCEDURE IF EXISTS TotalReadsByJournalist;
-CREATE PROCEDURE TotalReadsByJournalist(IN journalistCPR INT)
-BEGIN
-SELECT
-    J.First_name,
-    J.Last_name,
-    -- COALESCE returns first non-null value
-    COALESCE(SUM(A.Times_read), 0) AS Total_Reads
-FROM Journalist J
-         LEFT JOIN Article A ON J.CPR = A.Journalist_CPR
-WHERE J.CPR = journalistCPR
-GROUP BY J.First_name, J.Last_name;
+SELECT COUNT(*) INTO totalArticles FROM Article WHERE Journalist_CPR = journalistCPR;
+SELECT AVG(Times_read) INTO avgReads FROM Article WHERE Journalist_CPR = journalistCPR;
+
+SET summaryText = CONCAT('Total Articles: ', totalArticles, ', Avg Reads: ', CAST(avgReads AS CHAR));
+RETURN summaryText;
 END //
 DELIMITER ;
-CALL TotalReadsByJournalist(3002);
-CALL TotalReadsByJournalist(3018);
+-- Test cases for journalist 3002 & 3018
+SELECT ArticleSummary(3002) AS Summary;
+SELECT ArticleSummary(3018) AS Summary;
 
--- Procedure 1
+-- Procedure
 DELIMITER //
-DROP PROCEDURE IF EXISTS AddJournalist;
-CREATE PROCEDURE AddJournalist(
+DROP PROCEDURE IF EXISTS AddArticleForJournalistCPR;
+CREATE PROCEDURE AddArticleForJournalistCPR(
     IN p_cpr INT,
-    IN p_first_name VARCHAR(100),
-    IN p_last_name VARCHAR(100),
-    IN p_street_name VARCHAR(255),
-    IN p_civic_number INT,
-    IN p_city VARCHAR(100),
-    IN p_zip_code VARCHAR(20),
-    IN p_country VARCHAR(100),
-    IN p_telephone_num VARCHAR(20),
-    IN p_email VARCHAR(100)
+    IN p_title VARCHAR(255),
+    IN p_text TEXT,
+    IN p_topic VARCHAR(100),
+    IN p_times_read INT,
+    IN p_photo_title VARCHAR(255),
+    IN p_edition_id INT
 )
 BEGIN
-    DECLARE v_address_id INT;
+    DECLARE v_journalist_exists INT;
+    DECLARE v_message TEXT;
 
-    -- Insert into Address table and get the inserted ID
-INSERT INTO Address(Street_name, Civic_number, City, Zip_code, Country)
-VALUES(p_street_name, p_civic_number, p_city, p_zip_code, p_country);
-SET v_address_id = LAST_INSERT_ID();
+SELECT COUNT(*) INTO v_journalist_exists FROM Journalist WHERE CPR = p_cpr;
 
-    -- Insert into Journalist table with the new Address ID
-INSERT INTO Journalist(CPR, First_name, Last_name, Address_id, Telephone_num, Email)
-VALUES(p_cpr, p_first_name, p_last_name, v_address_id, p_telephone_num, p_email);
+IF v_journalist_exists > 0 THEN
+        IF p_times_read > 500 THEN
+            INSERT INTO Article(Title, Text, Topic, Times_read, Journalist_CPR, Photo_title, Edition_id)
+            VALUES(p_title, p_text, p_topic, p_times_read, p_cpr, p_photo_title, p_edition_id);
+            SET v_message = CONCAT('Article "', p_title, '" successfully added for journalist CPR: ', p_cpr, '.');
+ELSE
+            SET v_message = 'Article times_read must be over 500. No article added.';
+END IF;
+ELSE
+        SET v_message = CONCAT('No journalist found with CPR: ', p_cpr, '.');
+END IF;
 
-SELECT J.*, A.Street_name, A.Civic_number, A.City, A.Zip_code, A.Country
-FROM Journalist J
-         JOIN Address A ON J.Address_id = A.Address_id
-WHERE J.CPR = p_cpr;
-END//
+SELECT v_message AS OperationResult;
+END //
 DELIMITER ;
-SET @random_cpr = FLOOR(RAND(UNIX_TIMESTAMP(CURTIME(4))) * (3030 - 3021 + 1)) + 3021;
-CALL AddJournalist(@random_cpr, 'John', 'Doe', 'Main St', 123, 'Copenhagen', '1000', 'Denmark', '20812345', CONCAT('john.doe', '@email.com'));
+-- Test cases for all scenarios possible:
+	-- When "Times_read" is over 500
+    -- When "Times_read" is under 500
+    -- When "Journalist_CPR" is non-existent
+CALL AddArticleForJournalistCPR(3001, 'FCM v FCN', 'Nedrykningskamp', 'Superliga', 501, 'Superliga', 1);
+CALL AddArticleForJournalistCPR(3001, 'Hobro v AaB', 'Oprykningskamp', 'Superliga', 499, 'Superliga', 1);
+CALL AddArticleForJournalistCPR(2001, 'BIF v FCK', 'Finale', 'Superliga', 499, 'Superliga', 1);
+-- Don't forget to delete the articles if you're calling new values
+DELETE FROM Article WHERE Title = 'FCM v FCN';
+DELETE FROM Article WHERE Title = 'Hobro v AaB';
 
-DELETE FROM Journalist WHERE CPR BETWEEN 3021 AND 3030;
-DELETE FROM Address WHERE Address_id BETWEEN 3021 AND 3030;
-
--- Trigger 1
+-- Trigger
 DELIMITER //
 DROP TRIGGER IF EXISTS BeforeInsertArticle;
 CREATE TRIGGER BeforeInsertArticle
     BEFORE INSERT ON Article FOR EACH ROW
 BEGIN
     IF NEW.Times_read IS NULL OR NEW.Times_read = 0 THEN
-        SET NEW.Times_read = 1;
+        SET NEW.Times_read = 100;
 END IF;
 END//
 DELIMITER ;
 INSERT INTO Article (Title, Text, Topic, Times_read, Journalist_CPR, Photo_title)
-VALUES('Test Article', 'Contents of the test article', 'Tech', 426, 3011, 'Børge');
+VALUES('Test Article', 'Contents of the test article', 'Tech', 0, 3011, 'Børge');
+-- Notice the value change for "Times_read" when the value is set to 0
 SELECT * FROM Article WHERE Journalist_CPR = 3011;
+-- Don't forget to delete the article if you're inserting new values
 DELETE FROM Article WHERE Title = 'Test Article';
