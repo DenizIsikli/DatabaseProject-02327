@@ -157,7 +157,7 @@ INSERT INTO Edition (Date, Newspaper_title, Editor_CPR) VALUES
 
 -- Insert into Article
 INSERT INTO Article (Title, Text, Topic, Times_read, Journalist_CPR, Photo_title, Edition_id) VALUES
-                                                                                                  ('COVID-19 Dødsfald', 'CODID-19 dødsfald for 2021', 'COVID-19', 537, 3001, 'Dødsfald', 4),
+                                                                                                  ('COVID-19 Dødsfald', 'COVID-19 dødsfald for 2021', 'COVID-19', 537, 3001, 'Dødsfald', 4),
                                                                                                   ('Politik Venstre', 'Ny reformation', 'Politik', 1541, 3002, 'Venstre', 1),
                                                                                                   ('Superliga', 'Fodbold', 'Sport', 492, 3003, 'Superliga', 2),
                                                                                                   ('Kultur', 'Napoleon', 'Kultur', 1782, 3004, 'Napoleon', 3),

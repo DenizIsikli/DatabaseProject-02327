@@ -49,7 +49,8 @@ SELECT * FROM Journalist WHERE CPR = 3022;
 -- For each topic, show the most read news article.
 SELECT Topic, Title, MAX(Times_read) AS Most_Read
 FROM Article
-GROUP BY Topic;
+GROUP BY Topic
+ORDER BY Most_Read DESC;
 
 -- Show the top 10 journalists whose articles, overall, attracted the highest number of reads.
 SELECT j.First_name, j.Last_name, SUM(a.Times_read) AS Total_Reads
