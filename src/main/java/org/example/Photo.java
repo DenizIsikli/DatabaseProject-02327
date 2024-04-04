@@ -6,22 +6,29 @@ public class Photo {
     private final String title;
     private final Date date;
 
-    public Photo(String title, Date date) {
+    private final Integer cpr;
+
+    public Photo(String title, Date date, Integer cpr) {
         this.title = title;
         this.date = date;
+        this.cpr = cpr;
     }
 
     public String getTitle() {
         return title;
     }
-    public Date getDate() { return date; }
+    public String getDate() {
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
+        return dateFormatter.format(date); }
+
+    public Integer getCPR() {
+        return cpr;
+    }
 
     @Override
     public String toString() {
         final String D = ";";
-        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyyMMdd");
-
-        return getTitle() +D + dateFormatter.format(getDate());
+        return getTitle() +D + getDate();
     }
 
 }

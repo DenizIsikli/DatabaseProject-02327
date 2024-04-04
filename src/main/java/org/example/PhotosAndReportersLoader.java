@@ -53,6 +53,7 @@ public class PhotosAndReportersLoader {
 							throw new NumberFormatException("Invalid value (" + values.get(1) + ") for date at line " + lineNbr);
 						}
 						Integer cpr = Integer.valueOf(values.get(2));
+						Integer cpr2 = Integer.valueOf(values.get(2));
 						String firstName = values.get(3);
 						String lastName = values.get(4);
 						String streetName = values.get(5);
@@ -60,7 +61,7 @@ public class PhotosAndReportersLoader {
 						Integer zipCode  = Integer.valueOf(values.get(7));
 						String city = values.get(8);
 						String country = "Denmark";
-						PhotoAndReporter far = new PhotoAndReporter(title, date, cpr, firstName, lastName, streetName, civicNumber, city , zipCode, country);
+						PhotoAndReporter far = new PhotoAndReporter(title, date, cpr, cpr2, firstName, lastName, streetName, civicNumber, city , zipCode, country);
 						farList.add(far);
 					} else
 						throw new IOException("Invalid number of values on line " +lineNbr +". expected " +NUMBER_OF_FIELDS_EXPECTED +" values, found " +values.size());

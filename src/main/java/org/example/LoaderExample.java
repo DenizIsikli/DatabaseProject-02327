@@ -24,9 +24,10 @@ public class LoaderExample {
                         + "', " + photoAndReporter.getReporter().getZIPCode()
                         + ", '" + photoAndReporter.getReporter().getCountry()
                         + "');");
-                tableSchemeInsert("INSERT INTO photo (title, date_taken) VALUES ('"
+                tableSchemeInsert("INSERT INTO photo (title, date_taken, Journalist_CPR) VALUES ('"
                         + photoAndReporter.getPhoto().getTitle()
                         + "', '" + photoAndReporter.getPhoto().getDate()
+                        + "', '" + photoAndReporter.getPhoto().getCPR()
                         + "');");
 			}
 
